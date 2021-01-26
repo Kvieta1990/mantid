@@ -47,7 +47,7 @@ public:
   IndirectFittingModel();
   virtual ~IndirectFittingModel() = default;
 
-  // IIndirectFitDataModel
+  // Functions that interact with IndirectFitDataModel
   virtual bool hasWorkspace(std::string const &workspaceName) const;
   virtual Mantid::API::MatrixWorkspace_sptr
   getWorkspace(TableDatasetIndex index) const;
@@ -77,7 +77,6 @@ public:
                             const FunctionModelSpectra &spectra);
   virtual void removeWorkspace(TableDatasetIndex index);
 
-  // IIndirectFitRegion
   virtual std::pair<double, double>
   getFittingRange(TableDatasetIndex dataIndex, WorkspaceIndex spectrum) const;
   virtual std::string getExcludeRegion(TableDatasetIndex dataIndex,
@@ -140,7 +139,7 @@ public:
   void
   cleanFailedSingleRun(const Mantid::API::IAlgorithm_sptr &fittingAlgorithm,
                        TableDatasetIndex index);
-  virtual DataForParameterEstimationCollection
+  DataForParameterEstimationCollection
   getDataForParameterEstimation(const EstimationDataSelector &selector) const;
   std::unique_ptr<IIndirectFitDataModel> m_fitDataModel;
   void removeFittingData();
