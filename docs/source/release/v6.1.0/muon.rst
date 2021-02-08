@@ -49,6 +49,7 @@ Bug fixes
 
 Algorithms
 ----------
+- Added :ref:`PeakMatching <algm-PeakMatching>` algorithm.
 
 Fit Functions
 -------------
