@@ -23,6 +23,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QFileInfo>
+#include <algorithm>
 #include <sstream>
 
 namespace {
@@ -67,10 +68,6 @@ void ALCDataLoadingPresenter::handleRunsEditing() {
 void ALCDataLoadingPresenter::handleRunsEditingFinished() {
   // Make sure everything is reset
   m_view->enableRunsAutoAdd(false);
-
-  if (m_previousFirstRun !=
-      m_view->getInstrument() + m_view->getRunsFirstRunText())
-    m_view->setAvailableInfoToEmpty();
 
   m_view->setLoadStatus(
       "Finding " + m_view->getInstrument() + m_view->getRunsText(), "orange");
@@ -326,7 +323,18 @@ void ALCDataLoadingPresenter::updateAvailableInfo() {
 
   // sort alphabetically
   std::sort(logs.begin(), logs.end(), [](std::string &logA, std::string &logB) {
-    return std::tolower(logA[0]) < std::tolower(logB[0]);
+    auto sizeA = logA.size();
+    auto sizeB = logB.size();
+    auto minSize = std::min(sizeA, sizeB);
+    for (auto i = 0; (size_t)i <= minSize; ++i) {
+      // Equal so move to next character
+      if (std::tolower(logA[i]) == std::tolower(logB[i]))
+        continue;
+      // Not equal so sort
+      return std::tolower(logA[i]) < std::tolower(logB[i]);
+    }
+    // Return sort by size
+    return logA.size() < logB.size();
   });
 
   m_view->setAvailableLogs(logs);

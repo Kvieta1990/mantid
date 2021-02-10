@@ -27,7 +27,7 @@ namespace MantidQt {
 namespace CustomInterfaces {
 
 ALCDataLoadingView::ALCDataLoadingView(QWidget *widget)
-    : m_widget(widget), m_selectedLog(DEFAULT_LOG) {}
+    : m_widget(widget), m_selectedLog(DEFAULT_LOG), m_numPeriods(0) {}
 
 ALCDataLoadingView::~ALCDataLoadingView() {}
 
@@ -259,6 +259,10 @@ bool ALCDataLoadingView::setCurrentLog(const QString &log) {
  */
 void ALCDataLoadingView::setAvailablePeriods(
     const std::vector<std::string> &periods) {
+  if (periods.size() == m_numPeriods)
+    return;
+  m_numPeriods = periods.size();
+
   setAvailableItems(m_ui.redPeriod, periods);
   setAvailableItems(m_ui.greenPeriod, periods);
 
@@ -273,6 +277,7 @@ void ALCDataLoadingView::setAvailablePeriods(
   // If two periods, default to 1 minus 2
   if (periods.size() == 2) {
     m_ui.subtractCheckbox->setChecked(true);
+    m_ui.redPeriod->setCurrentIndex(0);
     m_ui.greenPeriod->setCurrentIndex(1);
   }
 }
