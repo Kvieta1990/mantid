@@ -66,7 +66,6 @@ public:
   void updateMultiDatasetParameters(const ITableWorkspace &params);
   void updateFitStatusData(const std::vector<std::string> &status,
                            const std::vector<double> &chiSquared);
-  void updateFitStatus(const FitDomainIndex index);
   QString selectedFitType() const;
   void setConvolveMembers(bool convolveEnabled);
   void setOutputCompositeMembers(bool outputEnabled);
@@ -115,6 +114,7 @@ private:
   IFunction_sptr getSingleFunction() const;
   QStringList getGlobalParameters() const;
   QStringList getLocalParameters() const;
+  void updateFitStatus(const FitDomainIndex index);
   void syncFullBrowserWithTemplate();
   void syncTemplateBrowserWithFull();
 
