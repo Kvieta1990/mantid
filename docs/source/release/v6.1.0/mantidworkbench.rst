@@ -8,6 +8,9 @@ Mantid Workbench Changes
 New and Improved
 ----------------
 
+- Added an algorithm ProfileChiSquared1D to profile chi squared after a fit. This can be used
+  to find better estimates of parameter errors.
+
 Bugfixes
 --------
 
