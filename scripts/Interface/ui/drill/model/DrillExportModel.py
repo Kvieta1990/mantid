@@ -189,9 +189,8 @@ class DrillExportModel:
         workspaceName = sample.getOutputName()
 
         tasks = list()
-        for wsName in mtd.getObjectNames():
-            if ((workspaceName in wsName)
-                    and (not isinstance(mtd[wsName], WorkspaceGroup))):
+        for wsName in mtd.getObjectNames(contain=workspaceName):
+            if not isinstance(mtd[wsName], WorkspaceGroup):
                 for a,s in self._exportAlgorithms.items():
                     if s:
                         if not self._validCriteria(wsName, a):
