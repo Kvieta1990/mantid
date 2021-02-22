@@ -18,6 +18,11 @@ repos:
       - id: clang-format
         exclude: Testing/Tools/cxxtest|tools
 
+  - repo: https://github.com/google/yapf
+    rev: main
+    hooks:
+      - id: yapf
+
   # Flake8 isn't automatically parallel on Windows due to lack of multiprocessing library support. So default to 16 jobs
   # to support 8 hyper threaded cores, In practice the drop on other OS' should be negligible
   - repo: https://gitlab.com/pycqa/flake8
