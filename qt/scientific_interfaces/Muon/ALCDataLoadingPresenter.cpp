@@ -83,8 +83,8 @@ void ALCDataLoadingPresenter::handleRunsFound() {
     return;
   }
 
-  // Check for errors as files might not have been found
-  if (!m_view->getRunsError().empty()) {
+  // Check for errors
+  if (isRunsErrors()) {
     m_view->setLoadStatus("Error", "red");
     m_view->displayError(m_view->getRunsError());
     return;
@@ -103,6 +103,18 @@ void ALCDataLoadingPresenter::handleRunsFound() {
     m_view->setLoadStatus("Error", "red");
     m_view->displayError(errroUpdateInfo.what());
   }
+}
+
+/**
+ * Called in handle runs found
+ * Checks for errors from the runs widget
+ * Allows for runs from separate directories
+ * Returns true if errors, false otherwise
+ */
+bool ALCDataLoadingPresenter::isRunsErrors() { 
+  
+  auto error = m_view->getRunsError();
+  return false; 
 }
 
 /**
@@ -302,15 +314,13 @@ void ALCDataLoadingPresenter::updateAvailableInfo() {
     loadedWs = loadAlg->getProperty("OutputWorkspace");
     firstGoodData = loadAlg->getProperty("FirstGoodData");
     timeZero = loadAlg->getProperty("TimeZero");
-
-    // Get actual file path and set on view
-    auto path = loadAlg->getPropertyValue("Filename");
-    path = path.substr(0, path.find_last_of("/\\"));
-    m_view->setPath(path);
   } catch (const std::exception &error) {
     m_view->setAvailableInfoToEmpty();
     throw std::runtime_error(error.what());
   }
+
+  // Set path
+  m_view->setPath(getPathFromFiles());
 
   // Set logs
   MatrixWorkspace_const_sptr ws = MuonAnalysisHelper::firstPeriod(loadedWs);
@@ -369,6 +379,21 @@ void ALCDataLoadingPresenter::updateAvailableInfo() {
 
   // Update number of detectors for this new first run
   m_numDetectors = ws->getInstrument()->getNumberDetectors();
+}
+
+std::string ALCDataLoadingPresenter::getPathFromFiles() { 
+  std::string returnPath;
+  auto files = m_view->getFiles();
+  for (auto path : files) {
+    auto currentPath = path.substr(0, path.find_last_of("/\\"));
+    if (returnPath.empty())
+      returnPath = currentPath;
+    else if (currentPath != returnPath) {
+      returnPath = "Multiple Directories";
+      break; // End loop no need to check anymore
+    }
+  }
+  return returnPath;
 }
 
 MatrixWorkspace_sptr ALCDataLoadingPresenter::exportWorkspace() {
