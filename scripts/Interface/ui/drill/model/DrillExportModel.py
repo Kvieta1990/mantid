@@ -14,6 +14,7 @@ from .DrillAlgorithmPool import DrillAlgorithmPool
 from .DrillTask import DrillTask
 
 import re
+import os
 
 
 class DrillExportModel:
@@ -225,6 +226,8 @@ class DrillExportModel:
             workspaceName (str): name of the workspace
         """
         exportPath = config.getString("defaultsave.directory")
+        if not exportPath:
+            exportPath = os.getcwd()
         workspaceName = sample.getOutputName()
 
         tasks = list()
