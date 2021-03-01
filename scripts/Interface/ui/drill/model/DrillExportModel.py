@@ -241,8 +241,8 @@ class DrillExportModel:
                                           "because the workspace is not "
                                           "compatible.".format(wsName, a))
                             continue
-                        filename = exportPath + wsName \
-                                   + RundexSettings.EXPORT_ALGO_EXTENSION[a]
+                        filename = os.path.join(exportPath, wsName
+                                + RundexSettings.EXPORT_ALGO_EXTENSION[a])
                         name = wsName + ":" + filename
                         if wsName not in self._exports:
                             self._exports[wsName] = set()
