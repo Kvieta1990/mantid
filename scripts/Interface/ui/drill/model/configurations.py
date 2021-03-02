@@ -133,7 +133,7 @@ class RundexSettings(object):
             SANS_ACQ: {
                 "HiddenColumns": [
                     "FluxRuns",
-                    "AbsorberRuns"
+                    "TransmissionAbsorberRuns"
                     ]
                 }
             }
