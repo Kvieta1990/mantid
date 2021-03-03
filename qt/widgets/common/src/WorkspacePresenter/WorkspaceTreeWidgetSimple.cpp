@@ -59,7 +59,8 @@ WorkspaceTreeWidgetSimple::WorkspaceTreeWidgetSimple(bool viewOnly,
       m_plotMDHisto1DWithErrs(
           new QAction("Plot 1D MDHistogram with errors...", this)),
       m_overplotMDHisto1DWithErrs(
-          new QAction("Overplot 1D MDHistogram with errors...", this)) {
+          new QAction("Overplot 1D MDHistogram with errors...", this)),
+      m_superplot(new QAction("Superplot", this)) {
 
   // Replace the double click action on the MantidTreeWidget
   m_tree->m_doubleClickAction = [&](const QString &wsName) {
@@ -77,6 +78,8 @@ WorkspaceTreeWidgetSimple::WorkspaceTreeWidgetSimple(bool viewOnly,
           SLOT(onPlotMDHistoWorkspaceWithErrorsClicked()));
   connect(m_overplotMDHisto1DWithErrs, SIGNAL(triggered()), this,
           SLOT(onOverPlotMDHistoWorkspaceWithErrorsClicked()));
+  connect(m_superplot, SIGNAL(triggered()),
+          this, SLOT(onSuperplotClicked()));
 
   connect(m_plotBin, SIGNAL(triggered()), this, SLOT(onPlotBinClicked()));
   connect(m_overplotSpectrum, SIGNAL(triggered()), this,
@@ -181,6 +184,7 @@ void WorkspaceTreeWidgetSimple::popupContextMenu() {
       if (!singleValued(*matrixWS)) {
         // regular matrix workspace
         menu->addMenu(plotSubMenu);
+        menu->addAction(m_superplot);
         menu->addSeparator();
         menu->addAction(m_showData);
         menu->addAction(m_showAlgorithmHistory);
@@ -308,6 +312,10 @@ void WorkspaceTreeWidgetSimple::onPlotSpectrumWithErrorsClicked() {
 
 void WorkspaceTreeWidgetSimple::onOverplotSpectrumWithErrorsClicked() {
   emit overplotSpectrumWithErrorsClicked(getSelectedWorkspaceNamesAsQList());
+}
+
+void WorkspaceTreeWidgetSimple::onSuperplotClicked() {
+  emit superplotClicked();
 }
 
 void WorkspaceTreeWidgetSimple::onPlotColorfillClicked() {

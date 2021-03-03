@@ -15,6 +15,7 @@ from mantidqt.plotting import functions
 from mantidqt.plotting.functions import can_overplot, pcolormesh, plot, plot_from_names, plot_md_ws_from_names
 from mantid.plots.utility import MantidAxType
 from mantid.simpleapi import CreateDetectorTable
+from mantidqt.dialogs.superplot import Superplot
 from mantidqt.utils.asynchronous import BlockingAsyncTaskWithCallback
 from mantidqt.widgets.instrumentview.presenter import InstrumentViewPresenter
 from mantidqt.widgets.samplelogs.presenter import SampleLogs
@@ -78,6 +79,8 @@ class WorkspaceWidget(PluginWidget):
             partial(self._do_plot_3D, plot_type='contour'))
         self.workspacewidget.contextMenuAboutToShow.connect(
             self._on_context_menu)
+        self.workspacewidget.superplotClicked.connect(
+            self._do_show_superplot)
 
         self.workspacewidget.workspaceDoubleClicked.connect(self._action_double_click_workspace)
 
@@ -271,6 +274,12 @@ class WorkspaceWidget(PluginWidget):
                 successful_workspaces.append(ws.name())
 
         self._do_show_data(list(map(lambda x: x + "-Detectors", successful_workspaces)))
+
+    def _do_show_superplot(self):
+        try:
+            Superplot()
+        except:
+            logger.error("Unable to start Superplot dialog.")
 
     def _run_create_detector_table(self, ws):
         CreateDetectorTable(InputWorkspace=ws)
