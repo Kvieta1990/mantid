@@ -81,7 +81,19 @@ def plot2d(workspace, tolerance: float=0.001, peakpositions: np.ndarray=DIAMOND,
     return fig, fig.axes
 
 
-def collect_peaks(wksp, outputname: str, donor=None):
+def __calculate_strain(obs, exp: np.ndarray):
+    return np.asarray(list(obs.values())[1:-2]) / exp
+
+
+def __calculate_rel_diff(obs, exp: np.ndarray):
+    obs_ndarray = np.asarray(list(obs.values())[1:-2])
+    return (obs_ndarray - exp) / exp
+
+
+def collect_peaks(wksp, outputname: str, donor=None, infotype: str = 'strain'):
+    if infotype not in ['strain', 'reldiff']:
+        raise ValueError('Do not know how to calculate "{}"'.format(infotype))
+
     wksp = mtd[str(wksp)]
 
     numSpec = int(wksp.rowCount())
@@ -100,7 +112,10 @@ def collect_peaks(wksp, outputname: str, donor=None):
     output.getAxis(0).setUnit('dSpacing')
     for i in range(numSpec):  # TODO get the detID correct
         output.setX(i, peaks)
-        output.setY(i, list(wksp.row(i).values())[1:-2] / peaks)
+        if infotype == 'strain':
+            output.setY(i, __calculate_strain(wksp.row(i), peaks))
+        elif infotype == 'reldiff':
+            output.setY(i, __calculate_rel_diff(wksp.row(i), peaks))
 
     # add the workspace to the AnalysisDataService
     mtd.addOrReplace(outputname, output)
