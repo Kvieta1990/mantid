@@ -12,8 +12,8 @@ repos:
       - id: check-xml
       - id: check-yaml
 
-  - repo: https://github.com/martyngigg/pre-commit-clang-format
-    rev: master
+  - repo: https://github.com/mantidproject/pre-commit-hooks
+    rev: main
     hooks:
       - id: clang-format
         exclude: Testing/Tools/cxxtest|tools
