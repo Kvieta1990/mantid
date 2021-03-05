@@ -547,6 +547,9 @@
    <property name="text">
     <string>&amp;Manage data directories</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
   </action>
   <action name="actionSettings">
    <property name="text">
@@ -628,10 +631,13 @@
    <property name="text">
     <string>&amp;New</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
   </action>
   <action name="actionProcessGroup">
    <property name="text">
-    <string>Process selected group(s)</string>
+    <string>Process selected &amp;group(s)</string>
    </property>
   </action>
  </widget>
