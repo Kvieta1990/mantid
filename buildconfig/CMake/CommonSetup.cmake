@@ -419,6 +419,10 @@ endif()
 if (MSVC)
   # Use downloaded ThirdParty version of pre-commit
   execute_process(COMMAND bash -c "(cd ${PROJECT_SOURCE_DIR}; ${MSVC_PYTHON_EXECUTABLE_DIR}/Scripts/pre-commit.cmd install)")
+  # Ensure the third party python is added to the path because otherwise it will
+  # use the microsoft appstore version for pre-commit and that's a bad version 
+  # of python.
+  execute_process(COMMAND bash -c "(cd ~; echo 'PATH=${MSVC_PYTHON_EXECUTABLE_DIR}/python.exe:$PATH' >> .bashrc)")
 else()
   # Use system installed pre-commit if not present it should just fail but 
   # continue anyway.
