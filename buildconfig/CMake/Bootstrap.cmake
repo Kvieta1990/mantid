@@ -128,8 +128,6 @@ if(MSVC)
   set(BOOST_LIBRARYDIR "${CMAKE_LIBRARY_PATH}")
   set(Boost_NO_SYSTEM_PATHS TRUE)
 
-  # Install pre-commit in the repository
-  execute_process(COMMAND bash -c "${MSVC_PYTHON_EXECUTABLE_DIR}/Scripts/pre-commit.cmd install")
 else()
   if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     # Homebrew adds qt4 here and we require it to be unlinked from /usr/local to

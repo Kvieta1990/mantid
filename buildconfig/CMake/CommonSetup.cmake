@@ -413,6 +413,19 @@ if(NOT BUNDLES)
 endif()
 
 # ##############################################################################
+# Setup pre-commit here as otherwise it will be overwritten by earlier 
+# pre-commit hooks being added
+# ##############################################################################
+if (MSVC)
+  # Use downloaded ThirdParty version of pre-commit
+  execute_process(COMMAND bash -c "${MSVC_PYTHON_EXECUTABLE_DIR}/Scripts/pre-commit.cmd install")
+else()
+  # Use system installed pre-commit if not present it should just fail but 
+  # continue anyway.
+  execute_process(COMMAND bash -c "pre-commit install")
+endif()
+
+# ##############################################################################
 # Set a flag to indicate that this script has been called
 # ##############################################################################
 
