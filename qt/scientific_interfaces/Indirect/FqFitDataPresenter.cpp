@@ -92,7 +92,7 @@ void FqFitDataPresenter::setActiveParameterType(const std::string &type) {
 }
 
 void FqFitDataPresenter::updateActiveDataIndex() {
-  m_dataIndex = m_fqFitModel->numberOfWorkspaces();
+  m_dataIndex = m_fqFitModel->getNumberOfWorkspaces();
 }
 
 void FqFitDataPresenter::updateActiveDataIndex(int index) {
@@ -124,7 +124,7 @@ void FqFitDataPresenter::updateAvailableParameterTypes() {
 
 void FqFitDataPresenter::updateParameterSelectionEnabled() {
   const auto enabled =
-      m_fqFitModel->numberOfWorkspaces() > TableDatasetIndex{0};
+      m_fqFitModel->getNumberOfWorkspaces() > TableDatasetIndex{0};
   m_cbParameter->setEnabled(enabled);
   m_cbParameterType->setEnabled(enabled);
   m_lbParameter->setEnabled(enabled);
@@ -199,7 +199,7 @@ FqFitDataPresenter::getParameterTypes(TableDatasetIndex dataIndex) const {
 
 void FqFitDataPresenter::addWorkspace(IndirectFittingModel *model,
                                       const std::string &name) {
-  if (model->numberOfWorkspaces() > m_dataIndex)
+  if (model->getNumberOfWorkspaces() > m_dataIndex)
     model->removeWorkspace(m_dataIndex);
   model->addWorkspace(name);
 }
@@ -255,7 +255,7 @@ void FqFitDataPresenter::setDataIndexToCurrentWorkspace(
 }
 
 void FqFitDataPresenter::closeDialog() {
-  if (m_fqFitModel->numberOfWorkspaces() > m_dataIndex)
+  if (m_fqFitModel->getNumberOfWorkspaces() > m_dataIndex)
     m_fqFitModel->removeWorkspace(m_dataIndex);
   IndirectFitDataPresenter::closeDialog();
 }

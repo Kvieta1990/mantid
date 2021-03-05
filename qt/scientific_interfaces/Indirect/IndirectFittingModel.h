@@ -66,7 +66,7 @@ public:
   FunctionModelSpectra getSpectra(TableDatasetIndex index) const;
 
   virtual bool isMultiFit() const;
-  virtual TableDatasetIndex numberOfWorkspaces() const;
+  virtual TableDatasetIndex getNumberOfWorkspaces() const;
   size_t getNumberOfSpectra(TableDatasetIndex index) const;
   size_t getNumberOfDomains() const;
   FitDomainIndex getDomainIndex(TableDatasetIndex dataIndex,

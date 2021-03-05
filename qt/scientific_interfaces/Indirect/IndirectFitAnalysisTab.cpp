@@ -276,14 +276,14 @@ void IndirectFitAnalysisTab::setModelFitFunction() {
 
 void IndirectFitAnalysisTab::setModelStartX(double startX) {
   const auto dataIndex = getSelectedDataIndex();
-  if (m_fittingModel->numberOfWorkspaces() > dataIndex) {
+  if (m_fittingModel->getNumberOfWorkspaces() > dataIndex) {
     m_fittingModel->setStartX(startX, dataIndex, getSelectedSpectrum());
   }
 }
 
 void IndirectFitAnalysisTab::setModelEndX(double endX) {
   const auto dataIndex = getSelectedDataIndex();
-  if (m_fittingModel->numberOfWorkspaces() > dataIndex) {
+  if (m_fittingModel->getNumberOfWorkspaces() > dataIndex) {
     m_fittingModel->setEndX(endX, dataIndex, getSelectedSpectrum());
   }
 }
@@ -589,7 +589,7 @@ bool IndirectFitAnalysisTab::validate() {
   const auto invalidFunction = m_fittingModel->isInvalidFunction();
   if (invalidFunction)
     validator.addErrorMessage(QString::fromStdString(*invalidFunction));
-  if (m_fittingModel->numberOfWorkspaces() == TableDatasetIndex{0})
+  if (m_fittingModel->getNumberOfWorkspaces() == TableDatasetIndex{0})
     validator.addErrorMessage(
         QString::fromStdString("No data has been selected for a fit."));
 
@@ -742,7 +742,7 @@ void IndirectFitAnalysisTab::setupFit(IAlgorithm_sptr fitAlgorithm) {
 QList<FunctionModelDataset> IndirectFitAnalysisTab::getDatasets() const {
   QList<FunctionModelDataset> datasets;
 
-  for (auto i = 0u; i < m_fittingModel->numberOfWorkspaces().value; ++i) {
+  for (auto i = 0u; i < m_fittingModel->getNumberOfWorkspaces().value; ++i) {
     TableDatasetIndex index{i};
 
     auto const name = m_fittingModel->getWorkspace(index)->getName();

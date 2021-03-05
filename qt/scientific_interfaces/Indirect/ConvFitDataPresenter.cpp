@@ -38,7 +38,7 @@ ConvFitDataPresenter::ConvFitDataPresenter(ConvFitModel *model,
 }
 
 void ConvFitDataPresenter::setModelResolution(const QString &name) {
-  auto const workspaceCount = m_convModel->numberOfWorkspaces();
+  auto const workspaceCount = m_convModel->getNumberOfWorkspaces();
   auto const index = m_convModel->getWorkspace(TableDatasetIndex{0})
                          ? workspaceCount - TableDatasetIndex{1}
                          : workspaceCount;
@@ -60,7 +60,7 @@ void ConvFitDataPresenter::addDataToModel(IAddWorkspaceDialog const *dialog) {
           dynamic_cast<ConvFitAddWorkspaceDialog const *>(dialog)) {
     addWorkspace(*convDialog, *m_convModel);
     auto const name = convDialog->resolutionName();
-    auto const index = m_convModel->numberOfWorkspaces() - TableDatasetIndex{1};
+    auto const index = m_convModel->getNumberOfWorkspaces() - TableDatasetIndex{1};
     m_convModel->setResolution(name, index);
     emit modelResolutionAdded(name, index);
   }

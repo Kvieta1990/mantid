@@ -38,6 +38,73 @@ public:
 
   void tearDown() override { AnalysisDataService::Instance().clear(); }
 
+  void test_hasWorkspace_returns_true_for_ws_in_model() {
+    TS_ASSERT(m_fitData->hasWorkspace("data workspace"));
+  }
+
+  void test_hasWorkspace_returns_false_for_ws_in_model() {
+    TS_ASSERT(!m_fitData->hasWorkspace("fake workspace"));
+  }
+
+  void test_getWorkspace_returns_nullptr_is_outside_of_range() {
+    TS_ASSERT_EQUALS(m_fitData->getWorkspace(TableDatasetIndex{1}), nullptr);
+  }
+
+  void test_getWorkspace_returns_ws_in_range() {
+    TS_ASSERT_EQUALS(m_fitData->getWorkspace(TableDatasetIndex{0})->getName(),
+                     "data workspace");
+  }
+
+  void test_getSpectra_returns_empty_spectra_is_outside_of_range() {
+    TS_ASSERT_EQUALS(m_fitData->getSpectra(TableDatasetIndex{1}).getString(),
+                     "");
+  }
+
+  void test_getSpectra_returns_spectra_in_range() {
+    TS_ASSERT_EQUALS(m_fitData->getSpectra(TableDatasetIndex{0}).getString(),
+                     "0-3");
+  }
+
+  void test_isMultiFit_returns_false_for_more_single_ws() {
+    TS_ASSERT(!m_fitData->isMultiFit());
+  }
+
+  void test_isMultiFit_returns_true_for_more_than_one_ws() {
+    auto dataWorkspace =
+        Mantid::IndirectFitDataCreationHelper::createWorkspace(4, 5);
+    Mantid::API::AnalysisDataService::Instance().addOrReplace(
+        "data workspace 2", std::move(dataWorkspace));
+    m_fitData->addWorkspace("data workspace 2");
+    TS_ASSERT(m_fitData->isMultiFit());
+  }
+
+  void test_getNumberOfWorkspaces_returns_correct_number_of_workspaces() {
+    TS_ASSERT_EQUALS(m_fitData->getNumberOfWorkspaces(), 1);
+    auto dataWorkspace =
+        Mantid::IndirectFitDataCreationHelper::createWorkspace(4, 5);
+    Mantid::API::AnalysisDataService::Instance().addOrReplace(
+        "data workspace 2", std::move(dataWorkspace));
+    m_fitData->addWorkspace("data workspace 2");
+    TS_ASSERT_EQUALS(m_fitData->getNumberOfWorkspaces(), 2);
+
+  }
+
+  void test_getNumberOfSpectra_returns_correct_number_of_spectra() {
+    TS_ASSERT_EQUALS(m_fitData->getNumberOfSpectra(TableDatasetIndex{0}), 4);
+    auto dataWorkspace =
+        Mantid::IndirectFitDataCreationHelper::createWorkspace(5, 5);
+    Mantid::API::AnalysisDataService::Instance().addOrReplace(
+        "data workspace 2", std::move(dataWorkspace));
+    m_fitData->addWorkspace("data workspace 2");
+    TS_ASSERT_EQUALS(m_fitData->getNumberOfSpectra(TableDatasetIndex{1}), 5);
+  }
+
+  void test_getNumberOfSpectra_raise_error_when_out_of_ws_range() {
+    TS_ASSERT_EQUALS(m_fitData->getNumberOfSpectra(TableDatasetIndex{0}), 4);
+    TS_ASSERT_THROWS(m_fitData->getNumberOfSpectra(TableDatasetIndex{1}),
+                     const std::runtime_error &);
+  }
+
   void test_that_getResolutionsForFit_return_correctly() {
     auto resolutionVector = m_fitData->getResolutionsForFit();
 

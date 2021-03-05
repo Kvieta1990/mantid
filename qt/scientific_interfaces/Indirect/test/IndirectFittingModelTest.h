@@ -216,7 +216,7 @@ public:
     auto model = createModelWithSingleWorkspace("WorkspaceName", 3);
 
     TS_ASSERT(model->getWorkspace(0));
-    TS_ASSERT_EQUALS(model->numberOfWorkspaces(), 1);
+    TS_ASSERT_EQUALS(model->getNumberOfWorkspaces(), 1);
     TS_ASSERT_EQUALS(model->getNumberOfSpectra(0), 3);
   }
 
@@ -573,10 +573,10 @@ public:
   }
 
   void
-  test_that_numberOfWorkspace_returns_the_number_of_workspace_stored_by_model() {
+  test_that_getNumberOfWorkspace_returns_the_number_of_workspace_stored_by_model() {
     auto const model = createModelWithMultipleWorkspaces(
         3, "Workspace1", "Workspace2", "Workspace3");
-    TS_ASSERT_EQUALS(model->numberOfWorkspaces(), 3);
+    TS_ASSERT_EQUALS(model->getNumberOfWorkspaces(), 3);
   }
 
   void test_that_getNumberOfSpectra_throws_if_dataIndex_is_out_of_range() {
@@ -646,7 +646,7 @@ public:
 
     TS_ASSERT(!model->getWorkspace(0));
     TS_ASSERT(!model->getWorkspace(1));
-    TS_ASSERT_EQUALS(model->numberOfWorkspaces(), 0);
+    TS_ASSERT_EQUALS(model->getNumberOfWorkspaces(), 0);
   }
 
   void
