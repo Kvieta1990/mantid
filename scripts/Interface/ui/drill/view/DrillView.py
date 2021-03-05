@@ -529,6 +529,9 @@ class DrillView(QMainWindow):
         elif (event.key() == Qt.Key_N
                 and event.modifiers() == Qt.ControlModifier):
             self.newTable.emit()
+        elif (event.key() == Qt.Key_D
+                and event.modifiers() == Qt.ControlModifier):
+            self.show_directory_manager()
 
     def show_directory_manager(self):
         """
