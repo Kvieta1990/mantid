@@ -418,11 +418,11 @@ endif()
 # ##############################################################################
 if (MSVC)
   # Use downloaded ThirdParty version of pre-commit
-  execute_process(COMMAND bash -c "${MSVC_PYTHON_EXECUTABLE_DIR}/Scripts/pre-commit.cmd install")
+  execute_process(COMMAND bash -c "(cd ${PROJECT_SOURCE_DIR}; ${MSVC_PYTHON_EXECUTABLE_DIR}/Scripts/pre-commit.cmd install)")
 else()
   # Use system installed pre-commit if not present it should just fail but 
   # continue anyway.
-  execute_process(COMMAND bash -c "pre-commit install")
+  execute_process(COMMAND bash -c "(cd ${PROJECT_SOURCE_DIR}; pre-commit install)")
 endif()
 
 # ##############################################################################
