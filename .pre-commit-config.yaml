@@ -7,19 +7,19 @@ repos:
 
   # Run fast code improvement/checks before running PR specific helpers.
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: master
+    rev: 2618198e9658cccb4a53f04af0f7d642109f3b54
     hooks:
       - id: check-xml
       - id: check-yaml
 
   - repo: https://github.com/mantidproject/pre-commit-hooks
-    rev: main
+    rev: 05b2d4cfe17dcb36e29c249705364c19eeccced5
     hooks:
       - id: clang-format
         exclude: Testing/Tools/cxxtest|tools
 
   - repo: https://github.com/google/yapf
-    rev: main
+    rev: a53e340c2ff24b36c98945c6f0374c6e21899afe
     hooks:
       - id: yapf
 
