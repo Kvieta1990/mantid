@@ -416,17 +416,22 @@ endif()
 # Setup pre-commit here as otherwise it will be overwritten by earlier 
 # pre-commit hooks being added
 # ##############################################################################
-if (MSVC)
-  # Use downloaded ThirdParty version of pre-commit
-  execute_process(COMMAND bash -c "(cd ${PROJECT_SOURCE_DIR}; ${MSVC_PYTHON_EXECUTABLE_DIR}/Scripts/pre-commit.cmd install)")
-  # Ensure the third party python is added to the path because otherwise it will
-  # use the microsoft appstore version for pre-commit and that's a bad version 
-  # of python.
-  execute_process(COMMAND bash -c "(cd ~; echo 'PATH=${MSVC_PYTHON_EXECUTABLE_DIR}/python.exe:$PATH' >> .bashrc)")
+option(ENABLE_PRECOMMIT "Enable pre-commit framework" ON)
+if (ENABLE_PRECOMMIT)
+  if (MSVC)
+    # Use downloaded ThirdParty version of pre-commit
+    execute_process(COMMAND bash -c "(cd ${PROJECT_SOURCE_DIR}; ${MSVC_PYTHON_EXECUTABLE_DIR}/Scripts/pre-commit.cmd install)")
+    # Ensure the third party python is added to the path because otherwise it will
+    # use the microsoft appstore version for pre-commit and that's a bad version 
+    # of python.
+    execute_process(COMMAND bash -c "pathman /au ${MSVC_PYTHON_EXECUTABLE_DIR}/python.exe")
+  else()
+    # Use system installed pre-commit if not present it should just fail but 
+    # continue anyway.
+    execute_process(COMMAND bash -c "(cd ${PROJECT_SOURCE_DIR}; pre-commit install)")
+  endif()
 else()
-  # Use system installed pre-commit if not present it should just fail but 
-  # continue anyway.
-  execute_process(COMMAND bash -c "(cd ${PROJECT_SOURCE_DIR}; pre-commit install)")
+  message(AUTHOR_WARNING "Pre-commit not enabled by CMake, please enable manually.")
 endif()
 
 # ##############################################################################
