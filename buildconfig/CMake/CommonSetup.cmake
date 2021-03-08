@@ -421,10 +421,9 @@ if (ENABLE_PRECOMMIT)
   if (MSVC)
     # Use downloaded ThirdParty version of pre-commit
     execute_process(COMMAND bash -c "(cd ${PROJECT_SOURCE_DIR}; ${MSVC_PYTHON_EXECUTABLE_DIR}/Scripts/pre-commit.cmd install)")
-    # Ensure the third party python is added to the path because otherwise it will
-    # use the microsoft appstore version for pre-commit and that's a bad version 
-    # of python.
-    execute_process(COMMAND bash -c "pathman /au ${MSVC_PYTHON_EXECUTABLE_DIR}/python.exe")
+    # Create pre-commit script wrapper to use mantid third party python for pre-commit
+    execute_process(COMMAND bash -c "(cd ${PROJECT_SOURCE_DIR}; mv .git/hooks/pre-commit .git/hooks/pre-commit-script)")
+    execute_process(COMMAND bash -c "(cd ${PROJECT_SOURCE_DIR}; echo '#!/bin/sh\n${MSVC_PYTHON_EXECUTABLE_DIR}/python.exe ${PROJECT_SOURCE_DIR}/.git/hooks/pre-commit-script' >> .git/hooks/pre-commit")
   else()
     # Use system installed pre-commit if not present it should just fail but 
     # continue anyway.
