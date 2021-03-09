@@ -462,7 +462,8 @@ void CSGObject::setMaterial(const Kernel::Material &material) {
  */
 const Kernel::Material &CSGObject::material() const {
   if (!m_material) {
-    m_material = std::make_unique<Material>();
+    throw std::runtime_error(
+        "Sample::material - No material has been defined.");
   }
   return *m_material;
 }

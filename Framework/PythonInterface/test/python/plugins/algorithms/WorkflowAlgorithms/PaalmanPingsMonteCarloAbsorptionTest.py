@@ -26,6 +26,7 @@ class PaalmanPingsMonteCarloAbsorptionTest(unittest.TestCase):
         Load('irs26176_graphite002_red.nxs', OutputWorkspace='geoms_ws')
         # set this workspace to have defined sample and can geometries to test the preset option
         SetSample('geoms_ws', Geometry={'Shape': 'Cylinder', 'Height': 4.0, 'Radius': 2.0, 'Center': [0., 0., 0.]},
+                  Material={'ChemicalFormula': 'Ni'},
                   ContainerGeometry={'Shape': 'HollowCylinder', 'Height': 4.0, 'InnerRadius': 2.0,
                                      'OuterRadius': 3.5})
 
@@ -196,10 +197,10 @@ class PaalmanPingsMonteCarloAbsorptionTest(unittest.TestCase):
         self._annulus_test(self._run_correction_and_test)
 
     def test_preset_with_override_material(self):
-        self._preset_with_override_material_test(self._run_correction_and_test)
+        self._preset_with_override_material_test(self._run_correction_with_container_test)
 
     def test_preset_without_overriding_material(self):
-        self._preset_without_override_material_test(self._run_correction_and_test)
+        self._preset_without_override_material_test(self._run_correction_with_container_test)
 
     def test_flat_plate_with_container(self):
         self._flat_plate_test(self._run_correction_with_container_test)
